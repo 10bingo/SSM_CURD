@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bingo.crud.dao.ExcelMapper">
+	
+	<insert id="insertInfoBatch" parameterType="java.util.List">
+	    insert into tbl_emp (emp_name, gender, email, d_id)
+	    values
+	    <foreach collection="list" item="item" index="index" separator=",">
+	      (#{item.empName}, #{item.gender}, #{item.email},#{item.dId})
+	    </foreach>
+	</insert> 
+	
+	
+	<select id="getEmpForExcel" parameterType="com.bingo.crud.bean.Employee" 
+		resultMap="com.bingo.crud.dao.EmployeeMapper.WithDeptResultMap">
+		SELECT
+			e.emp_id,
+			e.emp_name,
+			e.email,
+			e.gender,
+			d.dept_name
+		FROM
+			tbl_emp e
+		LEFT JOIN tbl_dept d ON e.d_id = d.dept_id
+	</select>
+	 
+  
+</mapper>
